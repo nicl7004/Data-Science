@@ -1,5 +1,6 @@
 from collections import defaultdict
 from csv import DictReader, DictWriter
+import csv
 import heapq
 
 kHEADER = ["STATE", "DISTRICT", "MARGIN"]
@@ -9,6 +10,7 @@ def district_margins(lines):
     Return a dictionary with keys as districts as keys and the difference in
     percentage between the winner and the second-place.
     """
+
 
     # Complete this function
     percentages = defaultdict(list)
@@ -22,7 +24,17 @@ def all_states(lines):
     in one line of Python.
     """
 
-    # Complete this function
+    # print(lines["STATE"])
+
+    x = [0]*len(lines)
+    i = 0
+
+    for row in lines:
+        x[i] = row["STATE"]
+        i+=1
+
+    x = set(x)
+    print (x)
     return set(["Alabama"])
 
 def all_state_rows(lines, state):
