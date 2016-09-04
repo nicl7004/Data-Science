@@ -12,6 +12,7 @@ def district_margins(lines):
     """
 
 
+
     # Complete this function
     percentages = defaultdict(list)
 
@@ -23,19 +24,8 @@ def all_states(lines):
     CsvReader object.  Don't think too hard on this; it can be written
     in one line of Python.
     """
-
-    # print(lines["STATE"])
-
-    x = [0]*len(lines)
-    i = 0
-
-    for row in lines:
-        x[i] = row["STATE"]
-        i+=1
-
-    x = set(x)
-    print (x)
-    return set(["Alabama"])
+    return set(list(rows["STATE"] for rows in lines if rows["STATE"]))
+    # return list(["Alabama"])
 
 def all_state_rows(lines, state):
     """
