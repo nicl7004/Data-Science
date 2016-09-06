@@ -1,6 +1,7 @@
 from collections import Counter
 from zipfile import ZipFile
 import re
+import os
 
 kWORDS = re.compile("[a-z]{4,}")
 
@@ -9,6 +10,17 @@ def text_from_zipfile(zip_file):
     Given a zip file, yield an iterator over the text in each file in the
     zip file.
     """
+
+    with ZipFile(zip_file, 'r') as myzip:
+        for each in myzip.namelist():
+            print(each)
+        # print(myzip.namelist())
+    # for fn in os.listdir(/home/user/Desktop/Data_Sci/Data-Science/HW 1/ds-hw-master/wrangling/data/state_union.zip):
+    #     if os.path.isfile(fn):
+    #         print (fn)
+
+
+
     # Modify this function
     return ["nope"]
 
@@ -31,7 +43,7 @@ def accumulate_counts(words, total=Counter()):
     """
     assert isinstance(total, Counter)
 
-    # Modify this function    
+    # Modify this function
     return total
 
 if __name__ == "__main__":
