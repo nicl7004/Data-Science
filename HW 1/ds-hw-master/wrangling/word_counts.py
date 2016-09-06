@@ -13,7 +13,14 @@ def text_from_zipfile(zip_file):
 
     with ZipFile(zip_file, 'r') as myzip:
         for each in myzip.namelist():
-            print(each)
+            if each:
+                print (each)
+                x = open(each, 'r')
+                while True:
+                    yield(x.readline())
+            else:
+                break
+	  #  yield(each)
         # print(myzip.namelist())
     # for fn in os.listdir(/home/user/Desktop/Data_Sci/Data-Science/HW 1/ds-hw-master/wrangling/data/state_union.zip):
     #     if os.path.isfile(fn):
@@ -22,7 +29,7 @@ def text_from_zipfile(zip_file):
 
 
     # Modify this function
-    return ["nope"]
+   
 
 def words(text):
     """
@@ -54,3 +61,4 @@ if __name__ == "__main__":
 
     for ii, cc in total.most_common(100):
         print("%s\t%i" % (ii, cc))
+
