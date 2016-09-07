@@ -57,12 +57,16 @@ def accumulate_counts(words, total=Counter()):
     assert isinstance(total, Counter)
     theList = {}
     # print(Counter(words))
-    frequency = []
     # print (words)
     for word in words:
-        frequency.append(words.count(word))
-    print(frequency)
-    x = dict(zip(words, frequency))
+        if word in total:
+            total[word] +=1
+        else:
+            total[word] = 1
+
+
+    # print(total)
+    # x = dict(zip(words, frequency))
     # print(x)
 
 
