@@ -10,38 +10,25 @@ def text_from_zipfile(zip_file):
     Given a zip file, yield an iterator over the text in each file in the
     zip file.
     """
+    x = []
     print(zip_file)
     with ZipFile(zip_file, 'r') as myzip:
-        info=myzip.infolist()
-        # print (info)
-        for each in info:
-            data = each.read()
-            print(each)
-        # with ZipFile(myzip, 'r')as myNewZip:
-        #     print(myNewZip)
+        for each in myzip.namelist():
+            data=myzip.read(each)
+            data = data.decode('utf-8', 'replace')
+            for y in data.split(' '):
+
+                yield(y)
+
+    # for each in ino:
+    #     data = myzip.read(each)
+    #     data = data.decode('utf-8', 'replace')
+    #     for y in data.split(' '):
+    #         x.append(y)
+    # print(x)
+    # return(x)
 
 
-        # for each in myzip.namelist():
-        #     if each != "state_union/":
-        #         # y = ZipFile(each)
-        #         remove = re.sub("^.{12,}", '', each)
-        #         print(remove)
-        #         print (each)
-                # ZipFile.read(each)
-                # x = ZipFile.read(each)
-            #     while True:
-            #         # yield(x.readline())
-            # else:
-            #     break
-	  #  yield(each)
-        # print(myzip.namelist())
-    # for fn in os.listdir(/home/user/Desktop/Data_Sci/Data-Science/HW 1/ds-hw-master/wrangling/data/state_union.zip):
-    #     if os.path.isfile(fn):
-    #         print (fn)
-
-
-
-    # Modify this function
 
 
 def words(text):
@@ -51,7 +38,13 @@ def words(text):
     lower case.
     """
     # Modify this function
-    return text.lower().split()
+
+    pattern = re.compile("[a-z]{4,}")
+    text = text.lower()
+    result = (pattern.findall(text))
+    # print (result)
+
+    return result
 
 def accumulate_counts(words, total=Counter()):
     """
@@ -62,6 +55,16 @@ def accumulate_counts(words, total=Counter()):
     @total The total counter we should add the counts to
     """
     assert isinstance(total, Counter)
+    theList = {}
+    # print(Counter(words))
+    frequency = []
+    # print (words)
+    for word in words:
+        frequency.append(words.count(word))
+    print(frequency)
+    x = dict(zip(words, frequency))
+    # print(x)
+
 
     # Modify this function
     return total

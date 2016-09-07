@@ -21,7 +21,8 @@ def district_margins(state_lines):
     # print(x, y)
     new_dict={}
     for each in range(len(x)):
-         new_dict[x[each]] = y[each]
+         new_dict[x[each]] = (y[each])
+        #  argmax or loop tofind largest row
     print (new_dict)
 
     return dict((int(x["D"]), 25.0) for x in state_lines if x["D"] and
@@ -34,7 +35,7 @@ def all_states(lines):
     in one line of Python.
     """
 
-    # Complete this function
+    #  Complete this function
 
     return set(list(rows["STATE"] for rows in lines if rows["STATE"]))
 
@@ -45,7 +46,7 @@ def all_state_rows(lines, state):
     @lines Only return lines from this larger list
     """
 
-    # Complete/correct this function
+    #  Complete/correct this function
     for ii in lines:
         yield ii
 
