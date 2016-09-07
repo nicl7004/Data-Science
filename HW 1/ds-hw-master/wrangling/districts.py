@@ -10,12 +10,21 @@ def district_margins(lines):
     Return a dictionary with keys as districts as keys and the difference in
     percentage between the winner and the second-place.
     """
-    print(list(rows["D"] for rows in lines))
+    # print(list(rows["D"] for rows in lines))
+    district= []
+    state = []
+    for x in lines:
+         if x["D"] and x["D"] != "H":
+             district.append(x["D"])
+             state.append(x["STATE"])
 
+
+    districtState = dict(zip(district,state))
+    print (districtState[1])
         # print(rows["DISTRICT"])
 
     #
-    print(dict((int(x["D"]), 25.0) for x in lines if x["D"] and x["D"] != "H"))
+
     # Complete this function
     percentages = defaultdict(list)
 
