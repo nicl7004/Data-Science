@@ -12,7 +12,18 @@ def district_margins(state_lines):
     """
 
     # Complete this function
-    print(all_state_rows(lines,'Colorado'))
+    x = []
+    y = []
+    for rows in state_lines:
+        if rows["D"] and rows["GENERAL %"] and rows["D"] != "H" and rows["D"] != " - ":
+            x.append(rows["D"])
+            y.append(rows["GENERAL %"])
+    # print(x, y)
+    new_dict={}
+    for each in range(len(x)):
+         new_dict[x[each]] = y[each]
+    print (new_dict)
+
     return dict((int(x["D"]), 25.0) for x in state_lines if x["D"] and
                 not (x["D"] == "H" or " - " in x["D"]))
 

@@ -12,14 +12,21 @@ def text_from_zipfile(zip_file):
     """
     print(zip_file)
     with ZipFile(zip_file, 'r') as myzip:
+        info=myzip.infolist()
+        # print (info)
+        for each in info:
+            data = each.read()
+            print(each)
         # with ZipFile(myzip, 'r')as myNewZip:
         #     print(myNewZip)
-        for each in myzip.namelist():
-            if each != "state_union/":
-                # y = ZipFile(each)
-                remove = re.sub("^.{12,}", '', each)
-                print(remove)
-                print (each)
+
+
+        # for each in myzip.namelist():
+        #     if each != "state_union/":
+        #         # y = ZipFile(each)
+        #         remove = re.sub("^.{12,}", '', each)
+        #         print(remove)
+        #         print (each)
                 # ZipFile.read(each)
                 # x = ZipFile.read(each)
             #     while True:
