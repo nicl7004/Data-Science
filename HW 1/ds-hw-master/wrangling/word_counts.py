@@ -10,16 +10,22 @@ def text_from_zipfile(zip_file):
     Given a zip file, yield an iterator over the text in each file in the
     zip file.
     """
-
+    print(zip_file)
     with ZipFile(zip_file, 'r') as myzip:
+        # with ZipFile(myzip, 'r')as myNewZip:
+        #     print(myNewZip)
         for each in myzip.namelist():
-            if each:
+            if each != "state_union/":
+                # y = ZipFile(each)
+                remove = re.sub("^.{12,}", '', each)
+                print(remove)
                 print (each)
-                x = open(each, 'r')
-                while True:
-                    yield(x.readline())
-            else:
-                break
+                # ZipFile.read(each)
+                # x = ZipFile.read(each)
+            #     while True:
+            #         # yield(x.readline())
+            # else:
+            #     break
 	  #  yield(each)
         # print(myzip.namelist())
     # for fn in os.listdir(/home/user/Desktop/Data_Sci/Data-Science/HW 1/ds-hw-master/wrangling/data/state_union.zip):
@@ -29,7 +35,7 @@ def text_from_zipfile(zip_file):
 
 
     # Modify this function
-   
+
 
 def words(text):
     """
@@ -61,4 +67,3 @@ if __name__ == "__main__":
 
     for ii, cc in total.most_common(100):
         print("%s\t%i" % (ii, cc))
-
