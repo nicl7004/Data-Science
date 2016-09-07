@@ -37,7 +37,7 @@ class TestDistrictMargins(unittest.TestCase):
 
     def test_filter(self):
         lines = list(DictReader(kALASKA))
-        self.assertEqual(list(all_state_rows(lines, "Bliss")), [])        
+        self.assertEqual(list(all_state_rows(lines, "Bliss")), [])
         self.assertEqual(list(all_state_rows(lines, "Alaska")), lines)
 
 class TestWordCounts(unittest.TestCase):
