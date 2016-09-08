@@ -11,25 +11,16 @@ def text_from_zipfile(zip_file):
     zip file.
     """
     x = []
-    print(zip_file)
+    # print(zip_file)
+    # extract zipfile
     with ZipFile(zip_file, 'r') as myzip:
+        # use namelist to get an object we can read
         for each in myzip.namelist():
+            # read data
             data=myzip.read(each)
-            data = data.decode('utf-8', 'replace')
+            data = data.decode('utf-8', 'replace') #decode and yield
             for y in data.split(' '):
-
                 yield(y)
-
-    # for each in ino:
-    #     data = myzip.read(each)
-    #     data = data.decode('utf-8', 'replace')
-    #     for y in data.split(' '):
-    #         x.append(y)
-    # print(x)
-    # return(x)
-
-
-
 
 def words(text):
     """
@@ -38,9 +29,9 @@ def words(text):
     lower case.
     """
     # Modify this function
-
+    # set pattern using regex compiler
     pattern = re.compile("[a-z]{4,}")
-    text = text.lower()
+    text = text.lower()#lowercase everything
     result = (pattern.findall(text))
     # print (result)
 
@@ -56,21 +47,12 @@ def accumulate_counts(words, total=Counter()):
     """
     assert isinstance(total, Counter)
     theList = {}
-    # print(Counter(words))
-    # print (words)
+# iterate through words and increment the total associated with the word
     for word in words:
         if word in total:
             total[word] +=1
         else:
             total[word] = 1
-
-
-    # print(total)
-    # x = dict(zip(words, frequency))
-    # print(x)
-
-
-    # Modify this function
     return total
 
 if __name__ == "__main__":

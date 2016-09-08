@@ -11,22 +11,36 @@ def district_margins(state_lines):
     @lines The csv rows that correspond to the districts of a single state
     """
 
-    # Complete this function
-    x = []
-    y = []
-    for rows in state_lines:
-        if rows["D"] and rows["GENERAL %"] and rows["D"] != "H" and rows["D"] != " - ":
-            x.append(rows["D"])
-            y.append(rows["GENERAL %"])
-    # print(x, y)
-    new_dict={}
-    for each in range(len(x)):
-         new_dict[x[each]] = (y[each])
-        #  argmax or loop tofind largest row
-    print (new_dict)
 
-    return dict((int(x["D"]), 25.0) for x in state_lines if x["D"] and
-                not (x["D"] == "H" or " - " in x["D"]))
+    percentages = {}
+    districts = set(x["D"] for x in lines if x["D"] and x["D"] != "H")
+    for dicts in districts:
+        newList = []
+        for each in lines:
+            if (each["D"] == dicts):
+                each["D"] = each["D"].split("-")[0]
+# parse the percent column and throw values in a list
+#then take list values and throw them in a dict
+                if (each["GENERAL %"]):
+                    par = each["GENERAL %"].replace(",", '.') #parse and replace
+                    par = float(par.replace("%",'')) #parse and replace again
+                    newList.append(par)
+                    percentages[int(each["D"])] = newList
+# find the top percentages by iterating through the districts
+#find and remove the largest percent and repeat the process to find the next largest percent
+# subtract secondplace from first and get the margin
+    for dicts in percentages:
+        if (percentages[dicts]):
+            if (len(percentages[dicts]) > 1):
+                biggest = max(percentages[dicts])
+                percentages[dicts].remove(biggest)
+                secondBiggest = max(percentages[dicts])
+                percentages[dicts] = biggest - secondBiggest
+            else:
+                percentages[dicts] = float(percentages[dicts][0])
+
+    return percentages
+
 
 def all_states(lines):
     """
@@ -36,6 +50,7 @@ def all_states(lines):
     """
 
     #  Complete this function
+    # iterate through lines and return a set (no repeats) of all states
 
     return set(list(rows["STATE"] for rows in lines if rows["STATE"]))
 
@@ -47,6 +62,7 @@ def all_state_rows(lines, state):
     """
 
     #  Complete/correct this function
+
     for ii in lines:
         yield ii
 
