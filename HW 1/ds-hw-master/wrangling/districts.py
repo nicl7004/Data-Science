@@ -13,10 +13,10 @@ def district_margins(state_lines):
 
 
     percentages = {}
-    districts = set(x["D"] for x in lines if x["D"] and x["D"] != "H")
+    districts = set(x["D"] for x in state_lines if x["D"] and x["D"] != "H")
     for dicts in districts:
         newList = []
-        for each in lines:
+        for each in state_lines:
             if (each["D"] == dicts):
                 each["D"] = each["D"].split("-")[0]
 # parse the percent column and throw values in a list

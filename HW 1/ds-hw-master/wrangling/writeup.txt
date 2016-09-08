@@ -1,0 +1,4 @@
+My approach to solve districts.py was to start with the basics.  I am fairly new to python so I did not know about tools like heapq (which I did not use).
+My biggest hurdle was dealing with the district margins, and formatting the output to match the test cases.
+The primary resource I used was online documentation, and I went to many TA office hours which were all very helpful.
+I thought it was interesting we used 4 character words instead of 5 or 6.  Many of the words we saw used most were simple words like 'that'.
