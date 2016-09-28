@@ -144,11 +144,6 @@ class BigramLanguageModel:
         """
         Return the log probability (base e) of a word given its context
         """
-        # assert context in self._vocab, "%s not in vocab" % context
-        # assert word in self._vocab, "%s not in vocab" % word
-
-        # Add your code here
-
         try:
             self._bigramEverything[context,word]
         except KeyError:
@@ -161,8 +156,6 @@ class BigramLanguageModel:
         numerator = self._bigramEverything[context,word]+1
         denom = (self._everything[context]+len(self._vocab))
         prob = numerator/denom
-        # print (prob)
-        # print (self._bigramEverything)
         return log(prob)
 
 
