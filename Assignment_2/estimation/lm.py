@@ -95,8 +95,33 @@ class BigramLanguageModel:
 
         occurances = 0
 
-        t1 = context
-        for (t1, t2) in self._bigramEverything:
+
+        for context, word in self._bigramEverything:
+            # print (-self.laplace(context,word))
+            prob = exp(-self.laplace(context, word))
+            # print(prob)
+            if (prob > number):
+                return word
+            else: #increment prob
+                prob += prob
+
+
+
+        # t1 = context
+        # for (t1, t2) in self._bigramEverything:
+        #     occurances +=1
+        #
+        # for (t1,t2) in self._bigramEverything:
+        #     try:
+        #         probability = self._bigramEverything[(context, t2)] / occurances
+        #     except KeyError:
+        #         word =
+        #         continue
+        #     if probability > number:
+        #         print(probability)
+        #         return probability
+        #     else:
+        #         probability += probability
 
         #
         # try:
