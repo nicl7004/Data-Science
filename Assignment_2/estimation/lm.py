@@ -1,4 +1,5 @@
 from math import log, exp
+import random
 # Nicholas Clement
 from collections import defaultdict, Counter
 from zipfile import ZipFile
@@ -84,11 +85,46 @@ class BigramLanguageModel:
         # Add your code here.  Make sure to the account for the case
         # of a context you haven't seen before and Don't forget the
         # smoothing "+1" term while sampling.
+        # fetch words related to context
+        # generate random number as threshold
+        # between 0 and 1
+        # divide probability of that word with that context
+        # check if normalized value crosses threshold of random value
 
-        # Your code here
+        number = random.uniform(0,1)
 
+        occurances = 0
 
-        return "the"
+        t1 = context
+        for (t1, t2) in self._bigramEverything:
+
+        #
+        # try:
+        #     temp = sum(self._bigramEverything[context].values())
+        # except KeyError:
+        #     self._bigramEverything[context,0] +=1
+        #     pass
+        # print(temp)
+        # for word in self._bigramEverything[context]:
+        #     occurances += 1
+        #     probability = self._bigramEverything[(context, word)]/temp
+        #     # print (probability, "probability", number, "number", word, "word", context, "context")
+        #     if probability>number:
+        #         return word
+        #     else:
+        #         probability += probability
+
+        # maximum = 0
+        # word = "hello"
+        # for each in self._vocab:
+        #     print("word=",each)
+        #     prob = -self.laplace(context, each)
+        #     print(prob, "laplace")
+        #     if prob > maximum:
+        #         print("PROB GREATER THAN MAX BRUH")
+        #         maximum = prob
+        #         word = each
+        # return (word)
 
     def sample(self, sample_size):
         """
@@ -193,7 +229,7 @@ class BigramLanguageModel:
             total = total + lap
             i += 1
             j += 1
-        print(total/len(sentence))
+        # print(total/len(sentence))
         return (total/(len(sentence)))
 
 
