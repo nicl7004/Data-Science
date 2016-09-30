@@ -77,33 +77,34 @@ class BigramLanguageModel:
             self._everything[word] = 1
 
     def generate(self, context):
-        """
-        Given the previous word of a context, generate a next word from its
-        conditional language model probability.
-        """
+        number = random.uniform(0,1)
 
-        # Add your code here.  Make sure to the account for the case
-        # of a context you haven't seen before and Don't forget the
-        # smoothing "+1" term while sampling.
+
         # fetch words related to context
-        # generate random number as threshold
-        # between 0 and 1
+        maxim = 0
+        x = context
+        newWord = "hello"
+        # print([x])
+        for context, word in self._bigramEverything:
+            if self._bigramEverything[(context,word)] > maxim and word != "</s>" and word != "<s>":
+                newWord = word
+                maxim = self._bigramEverything[(context,word)]
+    
+        return(word)
+
+
+
         # divide probability of that word with that context
         # check if normalized value crosses threshold of random value
 
-        number = random.uniform(0,1)
-
-        occurances = 0
-
-
-        for context, word in self._bigramEverything:
-            # print (-self.laplace(context,word))
-            prob = exp(-self.laplace(context, word))
-            # print(prob)
-            if (prob > number):
-                return word
-            else: #increment prob
-                prob += prob
+        # for context, word in self._bigramEverything:
+        #     print (-self.laplace(context,word))
+        #     prob = exp(-self.laplace(context, word))
+        #     print(prob)
+        #     if (prob > number):
+        #         return word
+        #     else: #increment prob
+        #         prob += prob
 
     def sample(self, sample_size):
         """
@@ -121,7 +122,6 @@ class BigramLanguageModel:
             else:
                 yield next
         yield kEND
-
     def finalize(self):
         """
         Fixes the vocabulary as static, prevents keeping additional vocab from
@@ -131,7 +131,6 @@ class BigramLanguageModel:
         # you should not need to modify this function
 
         self._vocab_final = True
-
     def tokenize_and_censor(self, sentence):
         """
         Given a sentence, yields a sentence suitable for training or testing.
@@ -146,7 +145,6 @@ class BigramLanguageModel:
                 raise OutOfVocab(ii)
             yield ii
         yield kEND
-
     def vocab(self):
         """
         Returns the language model's vocabulary
@@ -154,7 +152,6 @@ class BigramLanguageModel:
 
         assert self._vocab_final, "Vocab not finalized"
         return list(sorted(self._vocab))
-
     def laplace(self, context, word):
         """
         Return the log probability (base e) of a word given its context
@@ -172,8 +169,6 @@ class BigramLanguageModel:
         denom = (self._everything[context]+len(self._vocab))
         prob = numerator/denom
         return log(prob)
-
-
     def add_train(self, sentence):
         # print("in add train")
         for context, word in bigrams(list(self.tokenize_and_censor(sentence))):
@@ -211,10 +206,6 @@ class BigramLanguageModel:
         # print(total/len(sentence))
         return (total/(len(sentence)))
 
-
-
-
-
 if __name__ == "__main__":
     dem_lm = BigramLanguageModel()
     rep_lm = BigramLanguageModel()
@@ -244,3 +235,15 @@ if __name__ == "__main__":
                 print("%f\t%f\t%s" % (dem_score, rep_score, ii.strip()))
             except OutOfVocab:
                 None
+
+
+
+    # generate = '<s>'
+    # while(generate != '</s>'):
+    #     generate = dem_lm.generate(generate)
+    #     print(generate)
+    #
+    x = dem_lm.sample(7)
+    for each in x:
+        # print(each)
+        i = 0
