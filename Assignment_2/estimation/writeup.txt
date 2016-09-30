@@ -1,1 +1,12 @@
-obama won the disticts
+
+My approach to the generate function was to use the bigram that contained the context given and had the most common occurrence.
+My thought behind this was to calculate the most common 2 word phrases and construct a sentence out of these given the vocabulary we built from the presidential speeches.
+This was sucessful in passing the test, but unsuccessful in generating a legitmate sentence (infinite loop of common words give previous one.)
+
+It is somewhat safe to assume the histogram provided is a normal distribution, it has a very large standard deviation.
+
+Random Sentence:
+
+Democrat = and the we have
+
+Republican = as and all the soviet this i will the

@@ -82,15 +82,20 @@ class BigramLanguageModel:
 
         # fetch words related to context
         maxim = 0
-        x = context
+        # print(context)
+        # print("CONTEXT")
+        # x = context
         newWord = "hello"
         # print([x])
         for context, word in self._bigramEverything:
             if self._bigramEverything[(context,word)] > maxim and word != "</s>" and word != "<s>":
+                # print(context, word)
+                print(word)
                 newWord = word
-                maxim = self._bigramEverything[(context,word)]
-    
-        return(word)
+                maxim = self._bigramEverything[(context,word)] #update new max occuranced
+
+
+        return(newWord)
 
 
 
@@ -238,12 +243,8 @@ if __name__ == "__main__":
 
 
 
-    # generate = '<s>'
-    # while(generate != '</s>'):
-    #     generate = dem_lm.generate(generate)
-    #     print(generate)
-    #
-    x = dem_lm.sample(7)
-    for each in x:
-        # print(each)
-        i = 0
+
+    generateWord = '<s>'
+    while(generateWord != '</s>'):
+          generateWord = rep_lm.generate(generateWord)
+          print(generateWord)

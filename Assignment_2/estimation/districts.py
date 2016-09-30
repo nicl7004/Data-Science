@@ -114,6 +114,7 @@ if __name__ == "__main__":
     x = plt.hist(list(republican_share(lines, kOBAMA.union(kROMNEY)).values()), bins = "auto")
     plt.show()
 
+
     obama_var = ml_variance(republican_share(lines, kOBAMA).values(),
                              obama_mean)
     romney_var = ml_variance(republican_share(lines, kROMNEY).values(),
