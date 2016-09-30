@@ -105,52 +105,6 @@ class BigramLanguageModel:
             else: #increment prob
                 prob += prob
 
-
-
-        # t1 = context
-        # for (t1, t2) in self._bigramEverything:
-        #     occurances +=1
-        #
-        # for (t1,t2) in self._bigramEverything:
-        #     try:
-        #         probability = self._bigramEverything[(context, t2)] / occurances
-        #     except KeyError:
-        #         word =
-        #         continue
-        #     if probability > number:
-        #         print(probability)
-        #         return probability
-        #     else:
-        #         probability += probability
-
-        #
-        # try:
-        #     temp = sum(self._bigramEverything[context].values())
-        # except KeyError:
-        #     self._bigramEverything[context,0] +=1
-        #     pass
-        # print(temp)
-        # for word in self._bigramEverything[context]:
-        #     occurances += 1
-        #     probability = self._bigramEverything[(context, word)]/temp
-        #     # print (probability, "probability", number, "number", word, "word", context, "context")
-        #     if probability>number:
-        #         return word
-        #     else:
-        #         probability += probability
-
-        # maximum = 0
-        # word = "hello"
-        # for each in self._vocab:
-        #     print("word=",each)
-        #     prob = -self.laplace(context, each)
-        #     print(prob, "laplace")
-        #     if prob > maximum:
-        #         print("PROB GREATER THAN MAX BRUH")
-        #         maximum = prob
-        #         word = each
-        # return (word)
-
     def sample(self, sample_size):
         """
         Generate an English-like string from a language model of a specified

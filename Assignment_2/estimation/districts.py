@@ -1,8 +1,11 @@
 # Districts.py
 #
-#
+#Nicholas Clement
 
 # tuesdays at 5-6
+# import numpy and plot for histogram
+
+import matplotlib.pyplot as plt
 
 from csv import DictReader
 from collections import defaultdict
@@ -77,6 +80,8 @@ def republican_share(lines, states):
     Return an iterator over the Republican share of the vote in all
     districts in the states provided.
     """
+
+
     # print(lines[0])
 
     x = list(states)
@@ -95,6 +100,8 @@ def republican_share(lines, states):
                 continue
     return (h)
 
+
+
 if __name__ == "__main__":
     # Don't modify this code
     lines = [x for x in DictReader(open("../data/2014_election_results.csv"))
@@ -102,6 +109,10 @@ if __name__ == "__main__":
 
     obama_mean = ml_mean(republican_share(lines, kOBAMA).values())
     romney_mean = ml_mean(republican_share(lines, kROMNEY).values())
+
+    # numpy.histogram((republican_share(lines, kOBAMA).values()), 10)
+    x = plt.hist(list(republican_share(lines, kOBAMA.union(kROMNEY)).values()), bins = "auto")
+    plt.show()
 
     obama_var = ml_variance(republican_share(lines, kOBAMA).values(),
                              obama_mean)
