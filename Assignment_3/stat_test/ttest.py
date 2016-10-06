@@ -5,7 +5,7 @@ from numpy import mean
 
 def degrees_of_freedom(s1, s2, n1, n2):
 
-
+# for sa, sb in s1, s2
     num = (((s1**2)/n1)+((s2**2)/n2))**2
     denomA = (1/(n1-1))*(((s1**2)/n1)**2)
     denomB = (1/(n2-1))*(((s2**2)/n2)**2)
@@ -43,28 +43,17 @@ def t_statistic(mean1, mean2, n1, n2, svar1, svar2):
 
 def t_test(sample1, sample2):
 
-    # mean1 = sum(sample1)/ len(sample1)
-    # mean2 = sum(sample2)/ len(sample2)
-    # n1 = len(sample1)
-    # n2 = len(sample2)
-    #
-    # x = (degrees_of_freedom(sample1, sample2, n1, n2))
-    # print(x)
-    # tStat = t_statistic(mean1, mean2, n1, n2, sample1, sample2)
-    # print(tStat)
-    # y = t.pdf(tStat, x)
-    return 0
+    mean1 = sum(sample1)/ len(sample1)
+    mean2 = sum(sample2)/ len(sample2)
+    n1 = len(sample1)
+    n2 = len(sample2)
 
-    """
-    Return the two-tailed p-value of a t test with unequal variance for two samples.
+    s1, s2 = unbiased_sample_variance(sample1, mean1), unbiased_sample_variance(sample2, mean2)
 
-    @param sample1 An iterable of the first sample
-    @param sample2 An iterable of the second sample
-    """
+    tStat = t_statistic(mean1, mean2, n1, n2, s1, s2)
 
+    return (1-t.cdf(tStat, degrees_of_freedom(s1, s2, n1, n2)))*2
 
-
-    return 0.0
 
 if __name__ == "__main__":
     v1 = [5, 7, 5, 3, 5, 3, 3, 9]
