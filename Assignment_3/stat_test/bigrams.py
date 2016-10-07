@@ -1,6 +1,8 @@
 import re
 import operator
+import collections
 from collections import Counter
+
 from zipfile import ZipFile
 
 from numpy import array
@@ -28,7 +30,7 @@ def bigrams(sentence):
     """
     Given a sentence, generate all bigrams in the sentence.
     """
-    
+
     for ii, ww in enumerate(sentence[:-1]):
         yield ww, sentence[ii + 1]
 
@@ -36,7 +38,7 @@ def tokenize(sentence):
     """
     Given a sentence, return a list of all the words in the sentence.
     """
-    
+
     return kWORDS.findall(sentence.lower())
 
 def sentences_from_zipfile(zip_file):
@@ -63,8 +65,11 @@ def chisquare_pvalue(obs, ex):
     @param obs An array (list of lists or numpy array) of expected values
     """
 
-
+# notice the chi square import
     return 1.0
+
+
+
 
 class BigramFinder:
     """
@@ -76,14 +81,14 @@ class BigramFinder:
         """
         Instantiates the class.
 
-        @param min_ngram Ignore bigrams that appear fewer than this many times 
+        @param min_ngram Ignore bigrams that appear fewer than this many times
 
         @param max_unigram Ignore words that appear more than this many times
 
         @param min_unigram Ignore words that appear fewer than this many times
 
         @param exclude Don't add words from this set to bigrams
-    
+
         """
         self._exclude = set(exclude)
 
@@ -92,6 +97,11 @@ class BigramFinder:
         self._min_ngram = min_ngram
 
         self._vocab = None
+
+        self._bigramCount = collections.defaultdict(int)
+        # track each left and right
+        self._left = collections.defaultdict(int)
+        self._right = collections.defaultdict(int)
 
         # You may want to add additional data structures here.
 
@@ -106,11 +116,44 @@ class BigramFinder:
 
         obs = zeros((2, 2))
 
+        # tt ft
+        # tf ff
+
+        obs[0][0] = int(self._bigramCount[bigram])
+        print("HERE")
+        print(self._bigramCount[bigram])
+        tr = bl = br = 0
+
+        for each in self._bigramCount:
+            if each[0] != bigram[0] and each[1] == bigram[1]:
+                tr+=1
+            elif each[0] == bigram[0] and each[1] != bigram[1]:
+                bl +=1
+            elif each[0] != bigram[0] and each[1] != bigram[1]:
+                br +=1
+        obs[0][1], obs[1][0], obs[1][1] = tr, bl, br
+
+
+        obsTotal = obs[0][0] + obs[0][1] + obs[1][0] + obs[1][1]
+        topRowSum = obs[0][0] + obs[0][1]
+        bottomRowSum = obs[1][0] + obs[1][1]
+        leftColSum = obs[0][0] + obs[1][0]
+        rightColSum = obs[0][1] + obs[1][1]
+        print(obs[0][0], obs[0][1], obs[1][0], obs[1][1])
+        # print("top row sum", topRowSum)
+        # print("right  col sum", rightColSum)
 
         ex = zeros((2, 2))
+        ex[0][0] = leftColSum * topRowSum * 1/obsTotal
+        ex[0][1] = rightColSum * topRowSum *1/obsTotal
+        ex[1][0] = leftColSum * bottomRowSum *1/obsTotal
+        ex[1][1] = rightColSum * bottomRowSum * 1/obsTotal
+
+        print(ex[0][0], ex[0][1], ex[1][0], ex[1][1])
 
         return obs, ex
-        
+
+
     def score(self, bigram):
         """
         Compute the chi-square probability of a bigram being dependent.
@@ -124,7 +167,7 @@ class BigramFinder:
             return 1.0
 
         obs, ex = self.observed_and_expected(bigram)
-                
+
         return chisquare_pvalue(obs, ex)
 
     def vocab_scan(self, sentence):
@@ -133,7 +176,7 @@ class BigramFinder:
         This will be used to finalize the vocabulary later.
         """
 
-        # Don't modify this function.        
+        # Don't modify this function.
         for ii in sentence:
             self._unigram[ii] += 1
 
@@ -142,7 +185,7 @@ class BigramFinder:
         Return the finder's vocab
         """
 
-        # Don't modify this function.        
+        # Don't modify this function.
         return self._vocab
 
     def finalize(self):
@@ -156,17 +199,17 @@ class BigramFinder:
                           if self._unigram[x] >= self._min_unigram and
                           self._unigram[x] <= self._max_unigram and
                           x not in self._exclude)
-    
+
     def add_sentence(self, sentence):
         """
         Add the counts for a sentence (assumed to be iterable) so that we can
         then score bigrams.
         """
-        assert self._vocab is not None, "Adding counts before finalizing vocabulary"
-        
         # Your code here
         for ll, rr in bigrams(sentence):
-            None
+            self._bigramCount[ll,rr] +=1
+            self._left[ll] +=1
+            self._right[rr] +=1
             # Your code here
 
     def valid_bigrams(self):
@@ -174,18 +217,17 @@ class BigramFinder:
         Return an iterator over the bigrams that have been seen enough to get a
         score.
         """
-        
         # Your code here
-        return []
-        
+        return self._bigramCount
+
     def sorted_bigrams(self):
         """
         Return n-grams sorted by the probability of being an n-gram.  Should
         yield a tuple of words in bigram and the p-value of the bigram.
         """
-        
+
         # You should not need to modify this function
-        
+
         d = {}
         for ngram in self.valid_bigrams():
             d[ngram] = self.score(ngram)
@@ -195,14 +237,14 @@ class BigramFinder:
 
 if __name__ == "__main__":
     bf = BigramFinder(exclude=kSTOPWORDS)
-    
+
     for sent in sentences_from_zipfile("../data/state_union.zip"):
         bf.vocab_scan(tokenize(sent))
 
     bf.finalize()
-    
+
     for sent in sentences_from_zipfile("../data/state_union.zip"):
         bf.add_sentence(tokenize(sent))
-                
+
     for ngram, score in list(bf.sorted_bigrams())[:100]:
         print("%f\t%s\t%s\t" % (score, ngram[0], ngram[1]))
