@@ -126,11 +126,11 @@ class BigramFinder:
 
         for each in self._bigramCount:
             if each[0] != bigram[0] and each[1] == bigram[1]:
-                tr+=1
-            elif each[0] == bigram[0] and each[1] != bigram[1]:
-                bl +=1
-            elif each[0] != bigram[0] and each[1] != bigram[1]:
-                br +=1
+                tr+= self._bigramCount[each]
+            if each[0] == bigram[0] and each[1] != bigram[1]:
+                bl += self._bigramCount[each]
+            if each[0] != bigram[0] and each[1] != bigram[1]:
+                br += self._bigramCount[each]
         obs[0][1], obs[1][0], obs[1][1] = tr, bl, br
 
 
@@ -140,6 +140,7 @@ class BigramFinder:
         leftColSum = obs[0][0] + obs[1][0]
         rightColSum = obs[0][1] + obs[1][1]
         print(obs[0][0], obs[0][1], obs[1][0], obs[1][1])
+        print("bigram count =", self._bigramCount)
         # print("top row sum", topRowSum)
         # print("right  col sum", rightColSum)
 
@@ -207,7 +208,7 @@ class BigramFinder:
         """
         # Your code here
         for ll, rr in bigrams(sentence):
-            self._bigramCount[ll,rr] +=1
+            self._bigramCount[(ll,rr)] +=1
             self._left[ll] +=1
             self._right[rr] +=1
             # Your code here
