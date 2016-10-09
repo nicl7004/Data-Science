@@ -64,9 +64,12 @@ def chisquare_pvalue(obs, ex):
     @param obs An array (list of lists or numpy array) of observed values
     @param obs An array (list of lists or numpy array) of expected values
     """
-
+    a = (((obs[0][0] - ex[0][0])**2)/obs[0][0])
+    b = (((obs[0][1] - ex[0][1])**2)/obs[0][1])
+    c = (((obs[1][0] - ex[1][0])**2)/obs[1][0])
+    d = (((obs[1][1] - ex[1][1])**2)/obs[1][1])
 # notice the chi square import
-    return 1.0
+    return (a+b+c+d)
 
 
 
@@ -102,9 +105,6 @@ class BigramFinder:
         # track each left and right
         self._left = collections.defaultdict(int)
         self._right = collections.defaultdict(int)
-
-        # You may want to add additional data structures here.
-
         self._unigram = Counter()
 
     def observed_and_expected(self, bigram):
@@ -115,15 +115,14 @@ class BigramFinder:
         """
 
         obs = zeros((2, 2))
-
-        # tt ft
+# Below is the structure of the contengency table, where t is true and f is false
+       # tt ft
         # tf ff
 
         obs[0][0] = int(self._bigramCount[bigram])
-        print("HERE")
-        print(self._bigramCount[bigram])
-        tr = bl = br = 0
 
+        tr = bl = br = 0
+# iterate through the bigram dic and count the occurances of the necessary cases
         for each in self._bigramCount:
             if each[0] != bigram[0] and each[1] == bigram[1]:
                 tr+= self._bigramCount[each]
@@ -133,16 +132,14 @@ class BigramFinder:
                 br += self._bigramCount[each]
         obs[0][1], obs[1][0], obs[1][1] = tr, bl, br
 
+# get the row and column sums to preform the calculations
 
         obsTotal = obs[0][0] + obs[0][1] + obs[1][0] + obs[1][1]
         topRowSum = obs[0][0] + obs[0][1]
         bottomRowSum = obs[1][0] + obs[1][1]
         leftColSum = obs[0][0] + obs[1][0]
         rightColSum = obs[0][1] + obs[1][1]
-        print(obs[0][0], obs[0][1], obs[1][0], obs[1][1])
-        print("bigram count =", self._bigramCount)
-        # print("top row sum", topRowSum)
-        # print("right  col sum", rightColSum)
+
 
         ex = zeros((2, 2))
         ex[0][0] = leftColSum * topRowSum * 1/obsTotal
@@ -150,7 +147,7 @@ class BigramFinder:
         ex[1][0] = leftColSum * bottomRowSum *1/obsTotal
         ex[1][1] = rightColSum * bottomRowSum * 1/obsTotal
 
-        print(ex[0][0], ex[0][1], ex[1][0], ex[1][1])
+        # print(ex[0][0], ex[0][1], ex[1][0], ex[1][1])
 
         return obs, ex
 
