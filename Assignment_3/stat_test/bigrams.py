@@ -64,12 +64,26 @@ def chisquare_pvalue(obs, ex):
     @param obs An array (list of lists or numpy array) of observed values
     @param obs An array (list of lists or numpy array) of expected values
     """
-    a = (((obs[0][0] - ex[0][0])**2)/obs[0][0])
-    b = (((obs[0][1] - ex[0][1])**2)/obs[0][1])
-    c = (((obs[1][0] - ex[1][0])**2)/obs[1][0])
-    d = (((obs[1][1] - ex[1][1])**2)/obs[1][1])
+    # a = (((obs[0][0] - ex[0][0])**2)/obs[0][0])
+    # b = (((obs[0][1] - ex[0][1])**2)/obs[0][1])
+    # c = (((obs[1][0] - ex[1][0])**2)/obs[1][0])
+    # d = (((obs[1][1] - ex[1][1])**2)/obs[1][1])
+
+
 # notice the chi square import
-    return (a+b+c+d)
+    # swag = np.array(obs, ex).T
+    print(obs, ex)
+    newObs = newEx = []
+    for x, y in obs, ex:
+        newObs.append(x)
+        newEx.append(y)
+
+    print(array(obs))
+    print(array(ex))
+
+    print(chisquare(obs, f_exp=ex, ddof=1, axis=None)[1])
+    return((chisquare(obs, f_exp=ex, ddof=1, axis=None)[1]))
+    # return (chisquare(array(obs, f_exp = ex)))
 
 
 
