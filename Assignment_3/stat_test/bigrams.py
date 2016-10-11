@@ -68,22 +68,11 @@ def chisquare_pvalue(obs, ex):
     # b = (((obs[0][1] - ex[0][1])**2)/obs[0][1])
     # c = (((obs[1][0] - ex[1][0])**2)/obs[1][0])
     # d = (((obs[1][1] - ex[1][1])**2)/obs[1][1])
-    print((chisquare(array(obs), f_exp = array(ex), ddof=1, axis=0))[1])
-    return((chisquare(array(obs), f_exp = array(ex), ddof=1, axis=0))[1])
-# notice the chi square import
-    # swag = np.array(obs, ex).T
-    # print(obs, ex)
-    # newObs = newEx = []
-    # for x, y in obs, ex:
-    #     newObs.append(x)
-    #     newEx.append(y)
-    #
-    # print(array(obs))
-    # print(array(ex))
-    #
-    # print(chisquare(obs, f_exp=ex, ddof=1, axis=None)[1])
-    # return((chisquare(obs, f_exp=ex, ddof=1, axis=None)[1]))
-    # # return (chisquare(array(obs, f_exp = ex)))
+    # print((chisquare(array(obs), f_exp = array(ex), ddof=1, axis=0))[1])
+    # return((chisquare(array(obs), f_exp = array(ex), ddof=1, axis=0))[1])
+
+    return(chisquare(obs.flatten(), ex.flatten(), 2)[1])
+
 
 
 
@@ -129,14 +118,12 @@ class BigramFinder:
         """
 
         obs = zeros((2, 2))
-# Below is the structure of the contengency table, where t is true and f is false
-       # tt ft
-        # tf ff
+
 
         obs[0][0] = int(self._bigramCount[bigram])
 
         tr = bl = br = 0
-# iterate through the bigram dic and count the occurances of the necessary cases
+        # iterate through the bigram dic and count the occurances of the necessary cases
         for each in self._bigramCount:
             if each[0] != bigram[0] and each[1] == bigram[1]:
                 tr+= self._bigramCount[each]
@@ -146,7 +133,7 @@ class BigramFinder:
                 br += self._bigramCount[each]
         obs[0][1], obs[1][0], obs[1][1] = tr, bl, br
 
-# get the row and column sums to preform the calculations
+        # get the row and column sums to preform the calculations
 
         obsTotal = obs[0][0] + obs[0][1] + obs[1][0] + obs[1][1]
         topRowSum = obs[0][0] + obs[0][1]
@@ -164,8 +151,6 @@ class BigramFinder:
         # print(ex[0][0], ex[0][1], ex[1][0], ex[1][1])
 
         return obs, ex
-
-
     def score(self, bigram):
         """
         Compute the chi-square probability of a bigram being dependent.
@@ -181,7 +166,6 @@ class BigramFinder:
         obs, ex = self.observed_and_expected(bigram)
 
         return chisquare_pvalue(obs, ex)
-
     def vocab_scan(self, sentence):
         """
         Given a sentence, scan all of its words and add up their counts.
@@ -191,7 +175,6 @@ class BigramFinder:
         # Don't modify this function.
         for ii in sentence:
             self._unigram[ii] += 1
-
     def vocab(self):
         """
         Return the finder's vocab
@@ -199,7 +182,6 @@ class BigramFinder:
 
         # Don't modify this function.
         return self._vocab
-
     def finalize(self):
         """
         Creates the vocabulary of for later processing.  Filters low frequency
@@ -211,7 +193,6 @@ class BigramFinder:
                           if self._unigram[x] >= self._min_unigram and
                           self._unigram[x] <= self._max_unigram and
                           x not in self._exclude)
-
     def add_sentence(self, sentence):
         """
         Add the counts for a sentence (assumed to be iterable) so that we can
@@ -223,14 +204,19 @@ class BigramFinder:
             self._left[ll] +=1
             self._right[rr] +=1
             # Your code here
-
     def valid_bigrams(self):
         """
         Return an iterator over the bigrams that have been seen enough to get a
         score.
         """
-        # Your code here
-        return self._bigramCount
+        
+        for a,b in self._bigramCount:
+            if (self._unigram[a] <= self._max_unigram and self._unigram[b] <= self._max_unigram and
+            self._unigram[a] >= self._min_unigram and self._unigram[b] >= self._min_unigram and
+            self.score((a,b)) <= 0.05 and self._bigramCount[(a,b)] >= self._min_ngram):
+                yield ((a,b))
+
+
 
     def sorted_bigrams(self):
         """
