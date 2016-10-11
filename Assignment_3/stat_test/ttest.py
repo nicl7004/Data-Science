@@ -6,9 +6,9 @@ from numpy import mean
 def degrees_of_freedom(s1, s2, n1, n2):
 
 # for sa, sb in s1, s2
-    num = (((s1**2)/n1)+((s2**2)/n2))**2
-    denomA = (1/(n1-1))*(((s1**2)/n1)**2)
-    denomB = (1/(n2-1))*(((s2**2)/n2)**2)
+    num = (((s1)/n1)+((s2)/n2))**2
+    denomA = (1/(n1-1))*(((s1)/n1)**2)
+    denomB = (1/(n2-1))*(((s2)/n2)**2)
 
     return(num/(denomA+denomB))
 
