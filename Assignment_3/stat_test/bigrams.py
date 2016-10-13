@@ -209,7 +209,7 @@ class BigramFinder:
         Return an iterator over the bigrams that have been seen enough to get a
         score.
         """
-        
+
         for a,b in self._bigramCount:
             if (self._unigram[a] <= self._max_unigram and self._unigram[b] <= self._max_unigram and
             self._unigram[a] >= self._min_unigram and self._unigram[b] >= self._min_unigram and
@@ -236,6 +236,7 @@ class BigramFinder:
 if __name__ == "__main__":
     bf = BigramFinder(exclude=kSTOPWORDS)
 
+
     for sent in sentences_from_zipfile("../data/state_union.zip"):
         bf.vocab_scan(tokenize(sent))
 
@@ -243,6 +244,7 @@ if __name__ == "__main__":
 
     for sent in sentences_from_zipfile("../data/state_union.zip"):
         bf.add_sentence(tokenize(sent))
+    print(max(bf._bigramCount))
 
     for ngram, score in list(bf.sorted_bigrams())[:100]:
         print("%f\t%s\t%s\t" % (score, ngram[0], ngram[1]))
