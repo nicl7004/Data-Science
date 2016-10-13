@@ -36,7 +36,7 @@ def t_statistic(mean1, mean2, n1, n2, svar1, svar2):
 
     mean =mean1 - mean2
     denom = sqrt((svar1/n1)+(svar2/n2))
-
+    
     return  (mean/denom)
 
 

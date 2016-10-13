@@ -1,0 +1,8 @@
+My approach to this problem was to start with t-tests first, and then move on to bigrams.
+
+The hardest part of bigrams for me was setting up our contengency table of observed and expected.
+I was not familiar with matricies in python, so it took a bit of tinkering with the interpeter to make sure I got the row/column values correct.
+
+After the contengency table it was smooth sailing.
+
+The updates test file broke my ttest.  I noticed the first time through that the only way to pass was to double square varience, which confussed me.
