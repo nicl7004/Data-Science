@@ -1,3 +1,5 @@
+Nicholas Clement
+
 My approach to this problem was to start with t-tests first, and then move on to bi-grams.
 
 The hardest part of bi-grams for me was setting up our contingency table of observed and expected.
