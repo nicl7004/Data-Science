@@ -1,4 +1,7 @@
 import pandas
+#import our state dict and our cleaned up walmart data
+from walmart import replaceState
+from statedict import states
 from sklearn import linear_model, feature_extraction
 
 def categorical_features(row):
@@ -61,7 +64,7 @@ if __name__ == "__main__":
     backup = train_x
     train_x = y_data.merge(train_x, on="STATE",how='left')
 
-    print(y_data)
+
 
     # make sure we have all states in the test data
     for ii in set(y_data.STATE) - set(test_x.STATE):
@@ -73,7 +76,7 @@ if __name__ == "__main__":
                              train_x], axis=1)
     test_x = pandas.concat([test_x.STATE.astype(str).str.get_dummies(),
                              test_x], axis=1)
-
+    print(train_x, " TRAIN X HERERERERERERER")
     # handle missing data
     for dd in train_x, test_x:
         dd["NOPOLL"] = pandas.isnull(dd["VALUE"])
@@ -87,7 +90,8 @@ if __name__ == "__main__":
     # fit the regression
     mod = linear_model.LinearRegression()
     mod.fit(train_x[features], train_x["GENERAL %"])
-
+    print(train_x[features])
+    print(train_x[features])
     # Write out the model
     with open("model.txt", 'w') as out:
         out.write("BIAS\t%f\n" % mod.intercept_)
