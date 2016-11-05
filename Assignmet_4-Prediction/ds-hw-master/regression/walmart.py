@@ -1,30 +1,27 @@
 import pandas
 
 
-def replaceState(statedict, fileA):
+def replaceState(dictA, fileA):
     walmart_data = pandas.read_csv(fileA)
+    statedict = {}
+    
+    for k,v in dictA.items():
+        statedict[v] = k
 
 #get rid of words after the int
     for intEach, each in enumerate(walmart_data['NUMBER']):
         walmart_data['NUMBER'][intEach] = each.replace("per 1 million people", "")
 
-    # print(walmart_data)
-
+#change state names to symbols
     for intEach, each in enumerate(walmart_data['STATE']):
+        walmart_data['STATE'][intEach] = each = each.replace(":","")
 
-        each = each.replace(":", "").replace(' ', '')
-        print(each)
-        if each in statedict.values():
-            print("each in there")
+        if each in statedict:
             walmart_data['STATE'][intEach] = statedict[each]
 
+    return(walmart_data)
 
 
-    # print(walmart_data)
-
-    # for each in walmart_data:
-    #     each[1].replace(" per 1 million people ", "")
-    #     print(each)
 
 
 
