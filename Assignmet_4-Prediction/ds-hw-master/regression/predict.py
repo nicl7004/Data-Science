@@ -41,8 +41,9 @@ if __name__ == "__main__":
 
 
     walmart_data = replaceState(states, "walmart.csv")
+    print(walmart_data)
 
-    
+
     # Remove non-states
     all_data = all_data[pandas.notnull(all_data["STATE"])]
 
@@ -97,9 +98,14 @@ if __name__ == "__main__":
     features.append("VALUE")
     features.append("NOPOLL")
 
+    print(features)
+
     # fit the regression
+    # print(features)
     mod = linear_model.LinearRegression()
     mod.fit(train_x[features], train_x["GENERAL %"])
+    for each in features:
+        print(train_x[each])
     # Write out the model
     with open("model.txt", 'w') as out:
         out.write("BIAS\t%f\n" % mod.intercept_)
