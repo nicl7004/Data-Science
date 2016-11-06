@@ -38,9 +38,11 @@ if __name__ == "__main__":
 
     #Read in Walmart data
 ##############################
-    walmart_data = pandas.read_csv("walmart.csv")
-    # walmart_data = walmart_data.replacel
 
+
+    walmart_data = replaceState(states, "walmart.csv")
+
+    
     # Remove non-states
     all_data = all_data[pandas.notnull(all_data["STATE"])]
 
@@ -49,8 +51,11 @@ if __name__ == "__main__":
     train_x = last_poll(all_data[all_data["TOPIC"] == '2012-president'])
     train_x.set_index("STATE")
 
+
     test_x = last_poll(all_data[all_data["TOPIC"] == '2016-president'])
     test_x.set_index("STATE")
+
+
 
     # Read in the Y data
     y_data = pandas.read_csv("../data/2012_pres.csv", sep=';')
@@ -61,8 +66,12 @@ if __name__ == "__main__":
     y_data["STATE"] = y_data["STATE ABBREVIATION"]
     y_data.set_index("STATE")
 
+
+
     backup = train_x
     train_x = y_data.merge(train_x, on="STATE",how='left')
+    # train_x = y_data.merge(walmart_data, on="STATE", how = 'left')
+
 
 
 
@@ -76,7 +85,7 @@ if __name__ == "__main__":
                              train_x], axis=1)
     test_x = pandas.concat([test_x.STATE.astype(str).str.get_dummies(),
                              test_x], axis=1)
-    print(train_x, " TRAIN X HERERERERERERER")
+
     # handle missing data
     for dd in train_x, test_x:
         dd["NOPOLL"] = pandas.isnull(dd["VALUE"])
@@ -84,14 +93,13 @@ if __name__ == "__main__":
 
     # create feature list
     features = list(y_data.STATE)
+
     features.append("VALUE")
     features.append("NOPOLL")
 
     # fit the regression
     mod = linear_model.LinearRegression()
     mod.fit(train_x[features], train_x["GENERAL %"])
-    print(train_x[features])
-    print(train_x[features])
     # Write out the model
     with open("model.txt", 'w') as out:
         out.write("BIAS\t%f\n" % mod.intercept_)
