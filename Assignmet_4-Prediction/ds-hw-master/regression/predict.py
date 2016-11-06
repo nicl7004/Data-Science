@@ -41,12 +41,17 @@ if __name__ == "__main__":
 
 
     walmart_data = replaceState(states, "walmart.csv")
-    print(walmart_data)
+    # print(walmart_data)
 
 
     # Remove non-states
     all_data = all_data[pandas.notnull(all_data["STATE"])]
 
+    #merge in the walmart data
+
+    all_data = walmart_data.merge(all_data, on="STATE",how='left')
+
+    print(all_data)
 
     # split between testing and training
     train_x = last_poll(all_data[all_data["TOPIC"] == '2012-president'])
@@ -79,7 +84,9 @@ if __name__ == "__main__":
     # make sure we have all states in the test data
     for ii in set(y_data.STATE) - set(test_x.STATE):
         new_row = pandas.DataFrame([{"STATE": ii}])
+        # print(new_row)
         test_x = test_x.append(new_row)
+        # print(test_x)
 
     # format the data for regression
     train_x = pandas.concat([train_x.STATE.astype(str).str.get_dummies(),
@@ -92,20 +99,23 @@ if __name__ == "__main__":
         dd["NOPOLL"] = pandas.isnull(dd["VALUE"])
         dd["VALUE"] = dd["VALUE"].fillna(0.0)
 
+
     # create feature list
     features = list(y_data.STATE)
 
     features.append("VALUE")
     features.append("NOPOLL")
 
-    print(features)
+
+
 
     # fit the regression
     # print(features)
     mod = linear_model.LinearRegression()
     mod.fit(train_x[features], train_x["GENERAL %"])
-    for each in features:
-        print(train_x[each])
+
+
+
     # Write out the model
     with open("model.txt", 'w') as out:
         out.write("BIAS\t%f\n" % mod.intercept_)
