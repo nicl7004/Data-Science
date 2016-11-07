@@ -1,0 +1,16 @@
+Approach:
+  My approach to this problem was to research the number of Walmarts per million people in each state, and then use that as a predictor of more conservative states.
+  In order to do this I went online and found my data at http://www.statemaster.com/graph/lif_wal_sto_num_of_sup_percap-stores-number-supercenters-per-capita, and
+  found all the data I needed.
+
+Implementation:
+  I put all of the data I found into walmart.csv, and then proceeded to clean it with walmart.py.  Using techniques from assignment 1 and the begining of class I was able to
+  create walmart_data, a table that contained the state ABBREVIATION as well as the number of walmarts per million in that state.
+
+  After scrubbing my data, it was time to add it as a feature in predict.py.  I did this by appending it as a column to all_data prior to all_data being split into test and train.
+
+  all_data = walmart_data.merge(all_data, on="STATE",how='left')  This is the line I used to join the walmart data with all data
+
+Result:
+  As can be seen in my pred.txt and my pred-orig.txt, the addition of walmarts per capita had an effect on the numbers for each state.  The state with highest walmart per capita
+  (AK) can be seen to have a large increase in our new pred.txt in comparison to our old pred.txt.
