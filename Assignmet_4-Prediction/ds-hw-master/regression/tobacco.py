@@ -3,7 +3,8 @@ from math import isnan
 
 def filterTobacco(fileA):
     tobacco = pandas.read_csv(fileA)
-    dictTob = {}
+
+    ddict = {}
 
     for intEach, each in enumerate(tobacco["STATE"]):
         each = str(each)
@@ -13,24 +14,16 @@ def filterTobacco(fileA):
             continue
 
         try:
-            print(each, (tobacco["STATE"][intEach+1]))
+
             if each != str(tobacco["STATE"][intEach+1].replace(" ", "")) and intEach >=1:
-                print(each, (tobacco["STATE"][intEach+1]), "hererehrehrherhe")
-
-                dictTob[each] = tobacco["MEAN"][intEach]
-
-
-
+                ddict[each] = tobacco["MEAN"][intEach]
 
         except KeyError:
             continue
         except AttributeError:
             continue
 
-    #remove the first element because it is nan
-
-
-
+    dictTob = pandas.DataFrame(list(ddict.items()),columns =["STATE", "MEAN"])
 
     return dictTob
 

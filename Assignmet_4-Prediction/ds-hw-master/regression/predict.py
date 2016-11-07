@@ -1,6 +1,7 @@
 import pandas
 #import our state dict and our cleaned up walmart data
 from walmart import replaceState
+from tobacco import filterTobacco
 from statedict import states
 from sklearn import linear_model, feature_extraction
 
@@ -26,30 +27,24 @@ def last_poll(full_data):
     # Remove national polls
     return dedupe[dedupe["STATE"] != "US"]
 
-def walmart(walmart_data):
-    """create feature based off number of walmarts per million people
-    assume states with more walmarts are conservative"""
-
-
 
 if __name__ == "__main__":
     # Read in the X data
     all_data = pandas.read_csv("data.csv")
 
     #Read in Walmart data
-##############################
-
-
     walmart_data = replaceState(states, "walmart.csv")
-    # print(walmart_data)
+    #Read in tobacco data
+    tobacco_data = filterTobacco('tobacco_sales.csv')
 
 
     # Remove non-states
     all_data = all_data[pandas.notnull(all_data["STATE"])]
 
     #merge in the walmart data
-
     all_data = walmart_data.merge(all_data, on="STATE",how='left')
+    #merge in the tobacco data
+    all_data = tobacco_data.merge(all_data, on="STATE",how='left')
 
     print(all_data)
 
