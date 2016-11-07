@@ -3,6 +3,8 @@ import pandas
 from walmart import replaceState
 from tobacco import filterTobacco
 from statedict import states
+
+
 from sklearn import linear_model, feature_extraction
 
 def categorical_features(row):
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     #merge in the tobacco data
     all_data = tobacco_data.merge(all_data, on="STATE",how='left')
 
-    print(all_data)
+
 
     # split between testing and training
     train_x = last_poll(all_data[all_data["TOPIC"] == '2012-president'])

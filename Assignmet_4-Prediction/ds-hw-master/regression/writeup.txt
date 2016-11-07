@@ -3,14 +3,26 @@ Approach:
   In order to do this I went online and found my data at http://www.statemaster.com/graph/lif_wal_sto_num_of_sup_percap-stores-number-supercenters-per-capita, and
   found all the data I needed.
 
+  An additional feature that I added was tobacco sales per capita by state.  Similar to the walmart feature more tobacco sales tend to correlate with more conservative states.
+  All data on tobacco sales was found at http://libraries.ucsd.edu/ssds/pub/CTS/tobacco/sales/
+
+
 Implementation:
+  Walmart:
   I put all of the data I found into walmart.csv, and then proceeded to clean it with walmart.py.  Using techniques from assignment 1 and the begining of class I was able to
   create walmart_data, a table that contained the state ABBREVIATION as well as the number of walmarts per million in that state.
-
   After scrubbing my data, it was time to add it as a feature in predict.py.  I did this by appending it as a column to all_data prior to all_data being split into test and train.
 
   all_data = walmart_data.merge(all_data, on="STATE",how='left')  This is the line I used to join the walmart data with all data
 
+  Tobacco:
+  All tobacco information is stored in tobacco_sales.csv, and the function filterTobacco(file) (pun intended) is located in tobacco.py where I created a new dataframe to be added
+  to all of the other data.  Given in the tobacco_sales.csv are all packs per adult for each month of a given year.  Some of the information this data provided was irrelevant, we do not
+  care about the number of packs per adult in NY in 1989.  To account for this I accessed the latest month of the latest year recored for each state, and this produced more relevant information.
+
+
 Result:
   As can be seen in my pred.txt and my pred-orig.txt, the addition of walmarts per capita had an effect on the numbers for each state.  The state with highest walmart per capita
-  (AK) can be seen to have a large increase in our new pred.txt in comparison to our old pred.txt.
+  (AK) can be seen to have a large increase in our new pred.txt in comparison to our old pred.txt.  A similar result occured when adding in the smoking per capita feature.  The original
+  prediction can be seen in pred-orig.txt, the prediction with only the walmart feature(not the tobacco feature) can be found in pred-wal.txt, and the prediction with both features can
+  be found in pred.txt
