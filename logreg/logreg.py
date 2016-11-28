@@ -1,5 +1,5 @@
 #Nicholas Clement
-
+import timeit
 import random
 from numpy import zeros, sign
 from math import exp, log
@@ -60,7 +60,7 @@ class LogReg:
         """
 
         self.beta = zeros(num_features)
-        self.learning_rate = learning_rate
+        self.learning_rate = 0.000001#learning_rate
 
     def progress(self, examples):
         """
@@ -136,9 +136,13 @@ def read_dataset(positive, negative, vocab, test_proportion=.1):
     return train, test, vocab
 
 if __name__ == "__main__":
+    #start timer
+    start = timeit.default_timer()
+
+
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--step", help="Initial SG step size",
-                           type=float, default=0.1, required=False)
+                           type=float, default=0.01, required=False)
     argparser.add_argument("--positive", help="Positive class",
                            type=str, default="positive", required=False)
     argparser.add_argument("--negative", help="Negative class",
@@ -169,3 +173,7 @@ if __name__ == "__main__":
                 ho_lp, ho_acc = lr.progress(test)
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
+    #stop timer
+    stop = timeit.default_timer()
+    # show time taken to execute
+    print("Time to execute =", stop-start)
