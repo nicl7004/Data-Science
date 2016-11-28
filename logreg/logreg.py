@@ -91,9 +91,14 @@ class LogReg:
         :return: The current vector of parameters
         """
 
-        # Your code here
-
+        #previous + self.learning_rate*(self.beta)s
+        # print(train_example.x)#this is bias i think
+        # self.beta += self.learning_rate*((exp(train_example.x)/(1+exp(train_example.x)))/train_example.x)
+        val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
+        for each in range(len(self.beta)):
+            self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
         return self.beta
+        #probHockey = 1/(1+exp(train_example.x))
 
 
 def read_dataset(positive, negative, vocab, test_proportion=.1):
@@ -107,7 +112,7 @@ def read_dataset(positive, negative, vocab, test_proportion=.1):
     """
 
     # You should not need to modify this function
-    
+
     df = [float(x.split("\t")[1]) for x in open(vocab, 'r') if '\t' in x]
     vocab = [x.split("\t")[0] for x in open(vocab, 'r') if '\t' in x]
     assert vocab[0] == kBIAS, \
@@ -155,6 +160,7 @@ if __name__ == "__main__":
     for pp in range(args.passes):
         for ii in train:
             update_number += 1
+            # print(ii)
             lr.sg_update(ii)
 
             if update_number % 5 == 1:
