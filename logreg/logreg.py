@@ -91,14 +91,13 @@ class LogReg:
         :return: The current vector of parameters
         """
 
-        #previous + self.learning_rate*(self.beta)s
-        # print(train_example.x)#this is bias i think
-        # self.beta += self.learning_rate*((exp(train_example.x)/(1+exp(train_example.x)))/train_example.x)
+        #taken from slide deck 10c near the end of the presentation.
+        #start by computing pi as the probability of y(i) = 1 and x
         val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
+        #now update our beta values
         for each in range(len(self.beta)):
             self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
         return self.beta
-        #probHockey = 1/(1+exp(train_example.x))
 
 
 def read_dataset(positive, negative, vocab, test_proportion=.1):
