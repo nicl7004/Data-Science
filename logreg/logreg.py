@@ -4,6 +4,7 @@ import random
 from numpy import zeros, sign
 from math import exp, log
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 import argparse
 
@@ -60,7 +61,7 @@ class LogReg:
         """
 
         self.beta = zeros(num_features)
-        self.learning_rate = 0.000001#learning_rate
+        self.learning_rate = learning_rate
 
     def progress(self, examples):
         """
@@ -99,6 +100,8 @@ class LogReg:
         #now update our beta values
         for each in range(len(self.beta)):
             self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
+        plt.hist(self.beta)
+        plt.show
         return self.beta
 
 
@@ -142,7 +145,7 @@ if __name__ == "__main__":
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--step", help="Initial SG step size",
-                           type=float, default=0.01, required=False)
+                           type=float, default=0.1, required=False)
     argparser.add_argument("--positive", help="Positive class",
                            type=str, default="positive", required=False)
     argparser.add_argument("--negative", help="Negative class",
@@ -173,6 +176,7 @@ if __name__ == "__main__":
                 ho_lp, ho_acc = lr.progress(test)
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
+
     #stop timer
     stop = timeit.default_timer()
     # show time taken to execute
