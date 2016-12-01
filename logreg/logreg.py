@@ -183,7 +183,7 @@ if __name__ == "__main__":
     #stop timer
     stop = timeit.default_timer()
     print(m[-1])
-    plt.hist(m[-1], bins = auto)
-    plt.show
+    plt.hist(m[-1])
+    plt.show()
     # show time taken to execute
     print("Time to execute =", stop-start)
