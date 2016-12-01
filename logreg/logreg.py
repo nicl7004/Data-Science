@@ -1,7 +1,7 @@
 #Nicholas Clement
 import timeit
 import random
-from numpy import zeros, sign
+from numpy import zeros, sign, histogram
 from math import exp, log
 from collections import defaultdict
 import matplotlib.pyplot as plt
@@ -100,8 +100,9 @@ class LogReg:
         #now update our beta values
         for each in range(len(self.beta)):
             self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
-        plt.hist(self.beta)
-        plt.show
+
+        # print(self.beta)
+
         return self.beta
 
 
@@ -164,12 +165,14 @@ if __name__ == "__main__":
     lr = LogReg(len(vocab), args.step)
 
     # Iterations
+    m = []
     update_number = 0
     for pp in range(args.passes):
         for ii in train:
             update_number += 1
             # print(ii)
             lr.sg_update(ii)
+            m.append(lr.sg_update(ii))
 
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
@@ -179,5 +182,8 @@ if __name__ == "__main__":
 
     #stop timer
     stop = timeit.default_timer()
+    print(m[-1])
+    plt.hist(m[-1], bins = auto)
+    plt.show
     # show time taken to execute
     print("Time to execute =", stop-start)
