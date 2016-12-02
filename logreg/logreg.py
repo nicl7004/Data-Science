@@ -1,7 +1,7 @@
 #Nicholas Clement
 import timeit
 import random
-from numpy import zeros, sign, histogram
+from numpy import zeros, sign, histogram, argmin, argmax
 from math import exp, log
 from collections import defaultdict
 import matplotlib.pyplot as plt
@@ -93,27 +93,14 @@ class LogReg:
         :param train_example: The example to take the gradient with respect to
         :return: The current vector of parameters
         """
-
-        # #taken from slide deck 10c near the end of the presentation.
-        # #start by computing pi as the probability of y(i) = 1 and x
-        # val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
-        # #now update our beta values
-        # for i, (betas, trains) in enumerate(zip(range(len(self.beta)), train_example.nonzero)):
-        #
-        #     self.beta[betas] += self.learning_rate*(train_example.y-val)*train_example.x[betas]
-        #     # if self.learning_rate*(train_example.y-val)*train_example.x[betas] >.5 or self.learning_rate*(train_example.y-val)*train_example.x[betas] < -.5:
-        #     #     print(betas,trains,i)
-        # return self.beta
-
+        #taken from slide deck 10c near the end of the presentation.
+        #start by computing pi as the probability of y(i) = 1 and x
         val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
 
         for betas in range(len(self.beta)):
-
+            #now update our beta values
             self.beta[betas] += self.learning_rate*(train_example.y-val)*train_example.x[betas]
-            
         return self.beta
-
-
 
 def read_dataset(positive, negative, vocab, test_proportion=.1):
     """
@@ -182,7 +169,7 @@ if __name__ == "__main__":
             update_number += 1
             # print(ii)
             lr.sg_update(ii)
-            # m.append(lr.sg_update(ii)) #append the new weight vector to the list
+            m.append(lr.sg_update(ii)) #append the new weight vector to the list
             # listWords.append(ii)
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
@@ -190,24 +177,21 @@ if __name__ == "__main__":
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
 
-
-    #check beta size and print word if it is better than the threshold
-    # print(train.nonzero)
-    # print(len(m[-1]), len(listWords[-1].nonzero))
-    # for i, (each, words) in enumerate(zip(m[-1], train)):
-    #     if each > 0.5 or each < -0.5:
-    #         # print(each, words.nonzero[i])
-    #         each
-
-
     stop = timeit.default_timer()#stop timer
-    #
-    # plt.hist(m[-1],20, facecolor='red') #access the last
-    # plt.xlabel('Weight')
-    # plt.ylabel('Number of Weights from Feature Vector')
-    # plt.title('Histogram of Weights')
-    # plt.axis([-.7,.7,0,4000])
-    # plt.grid(True)
-    # plt.show()
-    # show time taken to execute
+    # use numpy.argmin and argmax to get the index of our best beta values
+    maxim = argmax(m[-1])
+    minim = argmin(m[-1])
+
+    print(maxim, minim)
+    #use our found indexes to find the most effective vocab words
+    print("Largest positive:", vocab[maxim], "Largest negative:", vocab[minim])
     print("Time to execute =", stop-start)
+
+    plt.hist(m[-1],20, facecolor='red') #access the last
+    plt.xlabel('Weight')
+    plt.ylabel('Number of Weights from Feature Vector')
+    plt.title('Histogram of Weights')
+    plt.axis([-.7,.7,0,4000])
+    plt.grid(True)
+    plt.show()
+    # show time taken to execute
