@@ -94,13 +94,25 @@ class LogReg:
         :return: The current vector of parameters
         """
 
-        #taken from slide deck 10c near the end of the presentation.
-        #start by computing pi as the probability of y(i) = 1 and x
+        # #taken from slide deck 10c near the end of the presentation.
+        # #start by computing pi as the probability of y(i) = 1 and x
+        # val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
+        # #now update our beta values
+        # for i, (betas, trains) in enumerate(zip(range(len(self.beta)), train_example.nonzero)):
+        #
+        #     self.beta[betas] += self.learning_rate*(train_example.y-val)*train_example.x[betas]
+        #     # if self.learning_rate*(train_example.y-val)*train_example.x[betas] >.5 or self.learning_rate*(train_example.y-val)*train_example.x[betas] < -.5:
+        #     #     print(betas,trains,i)
+        # return self.beta
+
         val = exp(self.beta.dot(train_example.x))/(1 + exp(self.beta.dot(train_example.x)))
-        #now update our beta values
-        for each in range(len(self.beta)):
-            self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
+
+        for betas in range(len(self.beta)):
+
+            self.beta[betas] += self.learning_rate*(train_example.y-val)*train_example.x[betas]
+            
         return self.beta
+
 
 
 def read_dataset(positive, negative, vocab, test_proportion=.1):
@@ -163,15 +175,15 @@ if __name__ == "__main__":
 
     # Iterations
     m = [] #this is where we will store our weight vector
-    z = [] #where we store words
+    listWords = [] #where we store words
     update_number = 0
     for pp in range(args.passes):
         for ii in train:
             update_number += 1
             # print(ii)
             lr.sg_update(ii)
-            m.append(lr.sg_update(ii)) #append the new weight vector to the list
-            z.append(ii)
+            # m.append(lr.sg_update(ii)) #append the new weight vector to the list
+            # listWords.append(ii)
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
                 ho_lp, ho_acc = lr.progress(test)
@@ -181,20 +193,21 @@ if __name__ == "__main__":
 
     #check beta size and print word if it is better than the threshold
     # print(train.nonzero)
-    print(len(m[-1]), len(train))
-    for i, (each, words) in enumerate(zip(m[-1], train)):
-        if each > 0.5 or each < -0.5:
-            print(each, words.nonzero)
+    # print(len(m[-1]), len(listWords[-1].nonzero))
+    # for i, (each, words) in enumerate(zip(m[-1], train)):
+    #     if each > 0.5 or each < -0.5:
+    #         # print(each, words.nonzero[i])
+    #         each
 
 
     stop = timeit.default_timer()#stop timer
-
-    plt.hist(m[-1],20, facecolor='red') #access the last
-    plt.xlabel('Weight')
-    plt.ylabel('Number of Weights from Feature Vector')
-    plt.title('Histogram of Weights')
-    plt.axis([-.7,.7,0,4000])
-    plt.grid(True)
-    plt.show()
+    #
+    # plt.hist(m[-1],20, facecolor='red') #access the last
+    # plt.xlabel('Weight')
+    # plt.ylabel('Number of Weights from Feature Vector')
+    # plt.title('Histogram of Weights')
+    # plt.axis([-.7,.7,0,4000])
+    # plt.grid(True)
+    # plt.show()
     # show time taken to execute
     print("Time to execute =", stop-start)
