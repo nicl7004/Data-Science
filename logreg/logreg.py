@@ -163,6 +163,7 @@ if __name__ == "__main__":
 
     # Iterations
     m = [] #this is where we will store our weight vector
+    z = [] #where we store words
     update_number = 0
     for pp in range(args.passes):
         for ii in train:
@@ -170,15 +171,23 @@ if __name__ == "__main__":
             # print(ii)
             lr.sg_update(ii)
             m.append(lr.sg_update(ii)) #append the new weight vector to the list
-
+            z.append(ii)
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
                 ho_lp, ho_acc = lr.progress(test)
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
 
-    #stop timer
-    stop = timeit.default_timer()
+
+    #check beta size and print word if it is better than the threshold
+    # print(train.nonzero)
+    print(len(m[-1]), len(train))
+    for i, (each, words) in enumerate(zip(m[-1], train)):
+        if each > 0.5 or each < -0.5:
+            print(each, words.nonzero)
+
+
+    stop = timeit.default_timer()#stop timer
 
     plt.hist(m[-1],20, facecolor='red') #access the last
     plt.xlabel('Weight')
