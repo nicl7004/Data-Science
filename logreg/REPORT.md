@@ -15,3 +15,11 @@ To test step sizes I updated the unit tests to run with different step sizes and
 ![?](log.png)
 
 It can be seen that it took 1061 iterations for us to reach a HA (Heldout accuracy) of about 95% and a TA (Train Accuracy) of about 97.5%.
+
+## 3. Good Predictors
+
+![?](histo.png)
+
+This is a histogram of our final beta (weight) vector.  It can be seen that the majority of weights fell between the -0.2 and +0.2 barriers.  For this reason we can assume that any weight that falls beyond -0.2 or +0.2 would be a "good" indicator of the document. The absolute best indicators are going to lie near the -0.6 or +0.6 marks, because their weights are very strong and suggestive of the document they correlate to.
+
+It is good to keep in mind that a positive probability is tied to baseball, while a negative probability correlates to hockey.

@@ -100,9 +100,6 @@ class LogReg:
         #now update our beta values
         for each in range(len(self.beta)):
             self.beta[each] += self.learning_rate*(train_example.y-val)*train_example.x[each]
-
-        # print(self.beta)
-
         return self.beta
 
 
@@ -165,14 +162,14 @@ if __name__ == "__main__":
     lr = LogReg(len(vocab), args.step)
 
     # Iterations
-    m = []
+    m = [] #this is where we will store our weight vector
     update_number = 0
     for pp in range(args.passes):
         for ii in train:
             update_number += 1
             # print(ii)
             lr.sg_update(ii)
-            m.append(lr.sg_update(ii))
+            m.append(lr.sg_update(ii)) #append the new weight vector to the list
 
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
@@ -182,8 +179,13 @@ if __name__ == "__main__":
 
     #stop timer
     stop = timeit.default_timer()
-    print(m[-1])
-    plt.hist(m[-1])
+
+    plt.hist(m[-1],20, facecolor='red') #access the last
+    plt.xlabel('Weight')
+    plt.ylabel('Number of Weights from Feature Vector')
+    plt.title('Histogram of Weights')
+    plt.axis([-.7,.7,0,4000])
+    plt.grid(True)
     plt.show()
     # show time taken to execute
     print("Time to execute =", stop-start)
